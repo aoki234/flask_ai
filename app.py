@@ -8,6 +8,7 @@ import tensorflow as tf
 
 app = Flask(__name__)
 model = None
+graph = None
 #global model, graph
 #model, graph = init()
 
@@ -41,7 +42,7 @@ def predict():
         img = np.expand_dims(img, axis=0)
         global graph
         with graph.as_default():
-
+            global model
             pred = model.predict(img)
             persons = [
                 'ちょまど',
