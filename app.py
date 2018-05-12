@@ -14,7 +14,7 @@ def load_model():
     global model
     #model = models.load_model('Save_model.h5')
     keras_model="Save_model.json"
-    keras_param="Save_model.h5"
+    keras_param="Save_model.hdf5"
     model = model_from_json(open(keras_model).read())
     model.load_weights(keras_param)
     #model.summary()
@@ -31,14 +31,14 @@ graph = tf.get_default_graph()
 def predict():
     if request.files and 'picfile' in request.files:
         global graph
+        global model
         with graph.as_default():
-
             img = request.files['picfile'].read()
             img = Image.open(io.BytesIO(img))
 
             img.save('test.jpg')
             img=img.resize((50,50))
-            img = np.asarray(img) / 255.0
+            img = np.asarray(img) / 255.
             img = np.expand_dims(img, axis=0)
             pred = model.predict(img)
             persons = [
