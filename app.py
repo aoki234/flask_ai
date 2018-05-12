@@ -13,13 +13,12 @@ graph = tf.get_default_graph()
 #model, graph = init()
 
 def load_model():
-    #model = models.load_model('Save_model.h5')
     global model
     keras_model="Save_model.json"
-    keras_param="Save_model.h5"
+    keras_param="Save_model.hdf5"
     model = model_from_json(open(keras_model).read())
     model.load_weights(keras_param)
-    #model.summary()
+    model.summary()
     #print('Loaded the model')
 
 
@@ -34,14 +33,13 @@ def predict():
 
         img = request.files['picfile'].read()
         img = Image.open(io.BytesIO(img))
-
         img.save('test.jpg')
         img=img.resize((50,50))
         img = np.asarray(img) / 255.
         img = np.expand_dims(img, axis=0)
-        global model
         global graph
-        with graph.as_default():
+        with graph .as_default():
+
             pred = model.predict(img)
             persons = [
                 'ちょまど',
@@ -53,8 +51,8 @@ def predict():
             confidence = int(round(max(pred[0]), 3)*100)
             pred = persons[np.argmax(pred)]
 
-            data = dict(pred=pred, confidence=str(confidence))
-            return jsonify(data)
+        data = dict(pred=pred, confidence=str(confidence))
+        return jsonify(data)
 
     return 'Picture info did not get saved.'
 
@@ -62,11 +60,10 @@ def predict():
 @app.route('/currentimage', methods=['GET'])
 def current_image():
     fileob = open('test.jpg', 'rb')
-
     data = fileob.read()
     return data
 
 
 if __name__ == '__main__':
     load_model()
-    app.run(debug=True)
+    app.run()
