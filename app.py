@@ -11,8 +11,8 @@ model = None
 
 
 def load_model():
-    global model
     #model = models.load_model('Save_model.h5')
+    global model
     keras_model="Save_model.json"
     keras_param="Save_model.hdf5"
     model = model_from_json(open(keras_model).read())
@@ -31,8 +31,8 @@ graph = tf.get_default_graph()
 def predict():
     if request.files and 'picfile' in request.files:
         global graph
-        global model
         with graph.as_default():
+            global model
             img = request.files['picfile'].read()
             img = Image.open(io.BytesIO(img))
 
