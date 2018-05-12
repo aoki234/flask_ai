@@ -8,7 +8,8 @@ import tensorflow as tf
 
 app = Flask(__name__)
 model = None
-
+#global model, graph
+#model, graph = init()
 
 def load_model():
     #model = models.load_model('Save_model.h5')
@@ -30,16 +31,17 @@ graph = tf.get_default_graph()
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.files and 'picfile' in request.files:
+
+        img = request.files['picfile'].read()
+        img = Image.open(io.BytesIO(img))
+
+        img.save('test.jpg')
+        img=img.resize((50,50))
+        img = np.asarray(img) / 255.
+        img = np.expand_dims(img, axis=0)
         global graph
         with graph.as_default():
-            global model
-            img = request.files['picfile'].read()
-            img = Image.open(io.BytesIO(img))
 
-            img.save('test.jpg')
-            img=img.resize((50,50))
-            img = np.asarray(img) / 255.
-            img = np.expand_dims(img, axis=0)
             pred = model.predict(img)
             persons = [
                 'ちょまど',
