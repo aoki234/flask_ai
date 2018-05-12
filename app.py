@@ -32,7 +32,7 @@ def predict():
     if request.files and 'picfile' in request.files:
         global graph
         with graph.as_default():
-            
+
             img = request.files['picfile'].read()
             img = Image.open(io.BytesIO(img))
 
@@ -59,8 +59,10 @@ def predict():
 
 @app.route('/currentimage', methods=['GET'])
 def current_image():
-    fileob = open('test.jpg', 'rb')
-    data = fileob.read()
+    #fileob = open('test.jpg', 'rb')
+    fileob = request.files['picfile'].read()
+    #data = fileob.read()
+    data = Image.open(io.BytesIO(img))
     return data
 
 
