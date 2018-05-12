@@ -8,7 +8,7 @@ import tensorflow as tf
 
 app = Flask(__name__)
 model = None
-graph = None
+graph = tf.get_default_graph()
 #global model, graph
 #model, graph = init()
 
@@ -28,7 +28,6 @@ def index():
     return render_template('index.html')
 
 
-graph = tf.get_default_graph()
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.files and 'picfile' in request.files:
@@ -41,8 +40,9 @@ def predict():
         img = np.asarray(img) / 255.
         img = np.expand_dims(img, axis=0)
         global graph
+        global model
         with graph.as_default():
-            global model
+            
             pred = model.predict(img)
             persons = [
                 'ちょまど',
