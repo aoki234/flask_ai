@@ -17,8 +17,8 @@ def load_model():
     keras_param="Save_model.h5"
     model = model_from_json(open(keras_model).read())
     model.load_weights(keras_param)
-    model.summary()
-    print('Loaded the model')
+    #model.summary()
+    #print('Loaded the model')
 
 
 @app.route('/')
