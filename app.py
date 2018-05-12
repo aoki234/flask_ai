@@ -14,7 +14,7 @@ def load_model():
     global model
     #model = models.load_model('Save_model.h5')
     keras_model="Save_model.json"
-    keras_param="Save_model.hdf5"
+    keras_param="Save_model.h5"
     model = model_from_json(open(keras_model).read())
     model.load_weights(keras_param)
     model.summary()
