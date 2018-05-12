@@ -38,7 +38,7 @@ def predict():
 
             img.save('test.jpg')
             img=img.resize((50,50))
-            img = np.asarray(img) / 255.
+            img = np.asarray(img) / 255.0
             img = np.expand_dims(img, axis=0)
             pred = model.predict(img)
             persons = [
@@ -59,10 +59,9 @@ def predict():
 
 @app.route('/currentimage', methods=['GET'])
 def current_image():
-    #fileob = open('test.jpg', 'rb')
-    fileob = request.files['picfile'].read()
-    #data = fileob.read()
-    data = Image.open(io.BytesIO(img))
+    fileob = open('test.jpg', 'rb')
+
+    data = fileob.read()
     return data
 
 
