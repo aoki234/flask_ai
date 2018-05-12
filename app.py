@@ -8,7 +8,7 @@ import tensorflow as tf
 
 app = Flask(__name__)
 model = None
-graph = tf.get_default_graph()
+#graph = tf.get_default_graph()
 #global model, graph
 #model, graph = init()
 
@@ -39,23 +39,20 @@ def predict():
         img=img.resize((50,50))
         img = np.asarray(img) / 255.
         img = np.expand_dims(img, axis=0)
-        global graph
         global model
-        with graph.as_default():
-            
-            pred = model.predict(img)
-            persons = [
-                'ちょまど',
-                '池澤あやか',
-                '石原さとみ',
-                '剛力彩芽'
-            ]
+        pred = model.predict(img)
+        persons = [
+            'ちょまど',
+            '池澤あやか',
+            '石原さとみ',
+            '剛力彩芽'
+        ]
 
-            confidence = int(round(max(pred[0]), 3)*100)
-            pred = persons[np.argmax(pred)]
+        confidence = int(round(max(pred[0]), 3)*100)
+        pred = persons[np.argmax(pred)]
 
-            data = dict(pred=pred, confidence=str(confidence))
-            return jsonify(data)
+        data = dict(pred=pred, confidence=str(confidence))
+        return jsonify(data)
 
     return 'Picture info did not get saved.'
 
@@ -70,4 +67,4 @@ def current_image():
 
 if __name__ == '__main__':
     load_model()
-    app.run()
+    app.run(debug=True)
