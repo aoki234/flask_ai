@@ -33,8 +33,8 @@ def predict():
 
         img = request.files['picfile'].read()
         img = Image.open(io.BytesIO(img))
-        img.save('test.jpg')
-        img=img.resize((50,50))
+        img.save('static/image/test.jpg')
+        img = img.resize((50,50))
         img = np.asarray(img) / 255.
         img = np.expand_dims(img, axis=0)
         global graph
@@ -59,7 +59,7 @@ def predict():
 
 @app.route('/currentimage', methods=['GET'])
 def current_image():
-    fileob = open('test.jpg', 'rb')
+    fileob = open('static/image/test.jpg', 'rb')
     data = fileob.read()
     return data
 
