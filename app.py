@@ -62,6 +62,7 @@ def predict():
 
 @app.route('/currentimage', methods=['GET'])
 def current_image():
+    global img
     if img:
         fileob = open('./tmp/test.jpg', 'rb')
         data = fileob.read()
