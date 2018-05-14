@@ -8,9 +8,10 @@ import tensorflow as tf
 
 app = Flask(__name__)
 model = None
-#graph = tf.get_default_graph()
+graph = tf.get_default_graph()
+img = None
 #global model, graph
-#model, graph = init()
+
 
 def load_model():
     global model
@@ -19,7 +20,6 @@ def load_model():
     model = model_from_json(open(keras_model).read())
     model.load_weights(keras_param)
     #model.summary()
-    #print('Loaded the model')
 
 
 @app.route('/')
@@ -30,17 +30,17 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.files and 'picfile' in request.files:
-        load_model()
+        global img
         img = request.files['picfile'].read()
         img = Image.open(io.BytesIO(img))
         img.save('./tmp/test.jpg')
-        img = img.resize((50,50))
-        img = np.asarray(img) / 255.0
-        img = np.expand_dims(img, axis=0)
-        #global graph
-        #with graph .as_default():
-
-        pred = model.predict(img)
+        image = img.resize((50,50))
+        image = np.asarray(image) / 255.0
+        image = np.expand_dims(image, axis=0)
+        global graph
+        with graph.as_default():
+            load_model()
+            pred = model.predict(image)
         persons = [
             'ちょまど',
             '池澤あやか',
@@ -59,11 +59,12 @@ def predict():
 
 @app.route('/currentimage', methods=['GET'])
 def current_image():
-    fileob = open('./tmp/test.jpg', 'rb')
-    data = fileob.read()
-    return data
+    if img:
+        fileob = open('./tmp/test.jpg', 'rb')
+        data = fileob.read()
+        return data
 
 
 if __name__ == '__main__':
     #load_model()
-    app.run()
+    app.run(threaded=True)
