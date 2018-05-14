@@ -5,6 +5,7 @@ from PIL import Image
 import io
 from keras.models import model_from_json
 import tensorflow as tf
+from time import sleep
 
 app = Flask(__name__)
 model = None
@@ -24,6 +25,8 @@ def load_model():
 
 @app.route('/')
 def index():
+    global img
+    img = None
     return render_template('index.html')
 
 
@@ -63,6 +66,7 @@ def current_image():
         fileob = open('./tmp/test.jpg', 'rb')
         data = fileob.read()
         return data
+    return None
 
 
 if __name__ == '__main__':
