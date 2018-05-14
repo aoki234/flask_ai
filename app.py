@@ -33,7 +33,7 @@ def predict():
 
         img = request.files['picfile'].read()
         img = Image.open(io.BytesIO(img))
-        img.save('./tmp/test.jpg')
+        #img.save('./tmp/test.jpg')
         img = img.resize((50,50))
         img = np.asarray(img) / 255.
         img = np.expand_dims(img, axis=0)
