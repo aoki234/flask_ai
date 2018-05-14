@@ -66,7 +66,6 @@ def current_image():
         fileob = open('./tmp/test.jpg', 'rb')
         data = fileob.read()
         return data
-    return None
 
 
 if __name__ == '__main__':
